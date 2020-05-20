@@ -77,7 +77,7 @@ def parse():
         print(f'The parsing is finished. The number of items we got is {len(cars)}')
         print(cars)
         save_file(cars, FILE)
-        os.startfile(FILE)+
+        os.startfile(FILE)
         
     else:
         print("Something is wrong!")
