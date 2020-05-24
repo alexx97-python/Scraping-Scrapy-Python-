@@ -44,7 +44,6 @@ def get_content(html):
             'city': item.find('div', class_='proposition_region').get_text(strip=True),
             'additional_information': item.find('div', class_='proposition_information').get_text(strip=True),
         })
-    print()
     return cars
 
 
@@ -77,8 +76,8 @@ def parse():
         print(f'The parsing is finished. The number of items we got is {len(cars)}')
         print(cars)
         save_file(cars, FILE)
-        os.startfile(FILE)+
-        
+        os.startfile(FILE)
+
     else:
         print("Something is wrong!")
 
