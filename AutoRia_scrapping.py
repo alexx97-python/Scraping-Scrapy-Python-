@@ -77,7 +77,6 @@ def parse():
         print(cars)
         save_file(cars, FILE)
         os.startfile(FILE)
-
     else:
         print("Something is wrong!")
 
