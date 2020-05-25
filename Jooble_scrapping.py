@@ -19,8 +19,7 @@ def get_html(URL, params=None):
 # This function gets the number of pages
 def get_pages_count(html):
     soup = BeautifulSoup(html, 'html.parser')
-    pagination = soup.find('div', id='bl_bot').find_all('a')
-    print(pagination)
+    pagination = soup.find('div', id='paging').find_all('a')
     if pagination:
         return int(pagination[-1].get_text(strip=True))
     return 1
@@ -33,7 +32,7 @@ def get_content(html):
 
     jobs = []
     for item in items:
-        sleep(1)
+        #sleep(1)
         if item.find('span', class_='employer-widget_company'):
             company = item.find('span', class_='employer-widget_company').get_text(strip=True)
         else:
@@ -64,14 +63,20 @@ def save_file(items, path):
 
 def parse():
     URL = input('Please, enter the valid link from Jooble with list of available positions: ')
+    URL = URL.strip()
     html = get_html(URL)
     if html.status_code == 200:
-        print('Parsing of web-page has started')
-        jobs = get_content(html.text)
-        save_file(jobs, FILE)
+        jobs = []
+        pages = get_pages_count(html.text)
+        for page in range(1, pages+1):
+            print('Parsing of web-page has started')
+            print(f'This {page} page from {pages} is now being parsed...')
+            html = get_html(URL, params={'p':page})
+            jobs.extend(get_content(html.text))
+            save_file(jobs, FILE)
         print('Parsing has been finished. The new site will be opened in a while.')
+        print(f'The number of jobs articles that was parsed is {len(jobs)}')
         os.startfile(FILE)
     return print(jobs)
-
 
 parse()
